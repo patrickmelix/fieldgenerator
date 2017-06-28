@@ -8,12 +8,12 @@ by Patrick Melix
 2017/04
 
 Limitations so far (that I know of):
- - no support for repeat-counter, frozen atom or igrp (see DL_POLY FIELD Manual)
+ - no support for repeat-counter, frozen atom or igrp (see [DL_POLY Manual](https://ccpforge.cse.rl.ac.uk/gf/project/dl_poly_classic/docman/))
  - no support for crossterms, rigid, pmf, constraints, shell, teth
  - no support for tbp, fbp, external field, tersoff, metal potential
  - only lj and buck potentials for VDW are supported
 
-The code contains a part for the creation of a LFMM-Parameter section (see [doi:10.1021/ic501519ah](ttp://dx.doi.org/10.1021/ic501519a) for explenation). The required modifications of the DL_POLY classic code are not available publicly but can be requested from the authors of the publication. The code works fine without any LFMM-Parameters and is therefore also compatible with the official DL_POLY Classic.
+The code contains a part for the creation of a LFMM-Parameter section (see [doi:10.1021/ic501519ah](http://dx.doi.org/10.1021/ic501519a) for explenation). The required modifications of the DL_POLY classic code are not available publicly but can be requested from the authors of the publication. The code works fine without any LFMM-Parameters and is therefore also compatible with the official DL_POLY Classic.
 
 ## Installation:
  - Run `pip3 install .` inside the main directory (use `pip3 install --user .`) if you do not have root permissions.
