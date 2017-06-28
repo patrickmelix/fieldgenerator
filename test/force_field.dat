@@ -1,0 +1,110 @@
+#Closely related to the format of the FIELD file, so also consult the DL_POLY manual
+# - comment lines have to start with #
+# - free formatting, each line is read with the python function list=line.split()
+#	so only use formatting options that python can split into lists
+# - exactly one empty line after each block
+# - numbers can contain easy mathematical expressions. They will be calculated using the simpleeval python module.
+ATOMS 7
+#atom mass  charge
+ca 12.0100    0.0503
+cb 12.0100   -0.1390
+cc 12.0100   -0.0957
+ha  1.0080    0.1135
+c1 12.0100    0.6031
+o1 16.0000   -0.5868
+cu 63.5460    1.0356
+
+BONDS 9
+c1  o1  harm  637.700/2   1.2183      0.0    0.0 
+ca  c1  harm  345.900*2   1.4906      0.0    0.0 
+ca  cb  harm  461.100+1   1.3984      0.0    0.0 
+cb  cc  harm  461.100   1.3984      0.0    0.0 
+cc  cc  harm  461.100   1.3984      0.0    0.0 
+cb  ha  harm  345.800   1.0860      0.0    0.0 
+cc  ha  harm  345.800   1.0860      0.0    0.0 
+cu  o1  harm   0.0       0.0      0.0    0.0 
+cu  cu  harm   0.0       0.0      0.0    0.0 
+
+ANGLES 14
+o1  c1  o1  harm  77.940   130.250
+ca  c1  o1  harm  68.720   122.600
+cb  ca  c1  harm  64.280   120.330 
+cb  ca  cb  harm  66.620   120.020
+ca  cb  cc  harm  66.620   120.020
+cc  cc  cc  harm  66.620   120.020
+cc  cc  cb  harm  66.620   120.020
+ha  cb  ca  harm  48.180   119.880
+ha  cb  cc  harm  48.180   119.880
+ha  cc  cc  harm  48.180   119.880
+ha  cc  cb  harm  48.180   119.880
+cu  o1  c1  harm   0.0       0.0
+cu  cu  o1  harm   0.0       0.0 
+o1  cu  o1  harm   0.0       0.0
+
+CROSSTERMS 0
+
+DIHEDRALS  20
+cb  ca  c1  o1  cos   0.000   180.000   0.000   0.000   0.000
+cc  cb  ca  c1  cos   0.000   180.000   0.000   0.000   0.000
+cc  cc  cb  ca  cos   0.000   180.000   0.000   0.000   0.000
+cc  cc  cc  cb  cos   0.000   180.000   0.000   0.000   0.000
+cb  ca  cb  cc  cos   0.000   180.000   0.000   0.000   0.000
+ca  o1  c1  o1  cos   0.000   180.000   0.000   0.000   0.000
+ha  cb  ca  c1  cos   0.000   180.000   0.000   0.000   0.000
+ha  cb  cc  ha  cos   0.000   180.000   0.000   0.000   0.000
+ha  cb  ca  cb  cos   0.000   180.000   0.000   0.000   0.000
+ha  cb  cc  cc  cos   0.000   180.000   0.000   0.000   0.000
+ha  cc  cb  ca  cos   0.000   180.000   0.000   0.000   0.000
+ha  cc  cc  cc  cos   0.000   180.000   0.000   0.000   0.000
+ha  cc  cc  cb  cos   0.000   180.000   0.000   0.000   0.000
+ha  cc  cc  ha  cos   0.000   180.000   0.000   0.000   0.000
+cu  o1  c1  c1  cos   0.0       0.0     0.0     0.0     0.0  
+cu  o1  c1  ca  cos   0.0       0.0     0.0     0.0     0.0  
+cu  o1  c1  o1  cos   0.0       0.0     0.0     0.0     0.0  
+c1  o1  cu  o1  cos   0.0       0.0     0.0     0.0     0.0  
+cu  cu  o1  c1  cos   0.0       0.0     0.0     0.0     0.0  
+o1  cu  cu  o1  cos   0.0       0.0     0.0     0.0     0.0  
+
+IMPROPER 0
+#improper dihedrals are only supported for an atom connected to 3 others
+#e.g. sp2-carbon atom connected to 3 other atoms
+
+INVERSION 0
+#inversions must include one atom, that is only connected to the three others
+
+VDW 7
+ca lj  1.6998      0.0860
+cb lj  1.6998      0.0860
+cc lj  1.6998      0.0860
+ha lj  1.2998      0.0150
+c1 lj  1.6998      0.0860
+o1 lj  1.4800      0.2100
+cu lj  3.1137      0.0050
+
+# LFMM section, remove everything below if you don't have a copy of the code presented in 
+#  http://dx.doi.org/10.1021/ic501519a
+#    types of metals, types of bonds
+LFMM 1 2
+#metal name, bonds to this metal, (low spin state defined by occupation numbers), (high spin state)
+#to restrict the spin set the occupations for high and low spin to the same values like in this example
+cu  5 (2, 2, 2, 2, 1) (2, 2, 2, 2, 1)
+#atomname, atomname, 7 coefficients for LFMM
+#lines: as_lo, apx_lo, apy_lo, ads_lo, aee (+, as_hi, apx_hi, apy_hi, ads_hi if two spin states)
+cu  o1       1.000000       2.000000       3.000000       4.000000       5.000000       6.000000       7.000000
+cu  o1       0.100000       0.200000       0.300000       0.400000       0.500000       0.600000       0.700000
+cu  o1       0.200000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000
+cu  o1       0.300000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000
+cu  o1       0.400000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000
+#coeffs for second bond type
+cu  cu       10.000000       11.000000       12.000000       13.000000       14.000000       15.000000       16.000000
+cu  cu       1.000000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000
+cu  cu       2.000000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000
+cu  cu       3.000000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000
+cu  cu       4.000000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000
+#bond terms of the lfmm in morse-form
+#atomname, atomname, De, r0, k
+#one line for each spin state (first: lo, second: hi)
+cu  o1       50000.0       1.7       0.300
+cu  cu       60000.0       1.8       0.400
+
+

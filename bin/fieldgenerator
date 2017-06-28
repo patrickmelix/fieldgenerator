@@ -1,0 +1,6 @@
+#!/usr/bin/python3
+from fieldgenerator import *
+
+generator = FieldGenerator()
+generator.create()
+print("Finished")

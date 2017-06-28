@@ -1,0 +1,4 @@
+include README.rst
+include test/force_field.dat
+include test/orig.xyz
+include test/xyz.reference
