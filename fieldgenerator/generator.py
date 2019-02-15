@@ -318,15 +318,13 @@ class FieldGenerator():
       if self.imcon > 0:
          for i in range(0,3):
             next(refFile)
-      i = 0
-      for line in range(0,nAtoms):
-         i += 1
+      for iAtom in range(1,nAtoms+1):
          line = refFile.readline().split()
          #convert to float for proper alignement
          line[1:] = [ float(i) for i in line[1:] ]
          #allow for additional values for velocity and force
          nLines = int((len(line)-1)/3)
-         write.write(('{:8}'+'{:10d}\n').format(line[0],i))
+         write.write(('{:8}'+'{:10d}\n').format(line[0],iAtom))
          for j in range(0,nLines):
             write.write(('{:20f}'*3+'\n').format(*line[(j*3)+1:((j+1)*3)+1]))
       write.close()
