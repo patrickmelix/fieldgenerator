@@ -31,7 +31,7 @@ class FieldGenerator():
    """ Class to store and create information about the complete ForceField and write it to a FIELD file """
 
    def __init__(self, systemName='systemName', workDir='', systemXYZFileName='xyz.reference',
-                  xyzFileNames=['orig.xyz'], ffFileNames=['force_field.dat'], nMols=[1], molNames=['MoleculeName'], 
+                  xyzFileNames=['orig.xyz'], ffFileNames=['force_field.dat'], nMols=[1], molNames=['MoleculeName'],
                   dataFileName='data.pickle',
                   unit='kcal', levcfg=0, imcon=2, engcfg=0.0,
                   floatFormat='{:20.6f}', fieldFileName='FIELD',
@@ -174,7 +174,7 @@ class FieldGenerator():
 
       #read atom names and all positions from xyzReferenceFile
       self._readAtomNames()
-      
+
       #read FF
       self._readFF()
       self._checkInputFF()
@@ -265,7 +265,7 @@ class FieldGenerator():
       self._makeVdWSection()
       self.fieldOut.append('CLOSE')
       self._makeLFSESection()
-      
+
       #set status
       self._hasField = True
    """END makeField"""
@@ -282,7 +282,7 @@ class FieldGenerator():
       if not self._hasField:
          sys.exit("You need to run self.makeField() first")
       fieldFilePath = os.path.join(self.workDir,self.fieldFileName)
-      write = open(fieldFilePath, 'w')
+      write = open(fieldFilePath, 'w', encoding="utf-8")
       for line in self.fieldOut:
          write.write(line)
          write.write('\n')
@@ -299,7 +299,7 @@ class FieldGenerator():
       for i,mol in enumerate(self.atoms):
          nAtoms += len(mol)*self.nMols[i]
       configFilePath = os.path.join(self.workDir,self.configFileName)
-      write = open(configFilePath, 'w')
+      write = open(configFilePath, 'w', encoding="utf-8")
       #systemname and box are static
       box = self.box
       write.write('{:>80}\n'.format(self.systemName))
@@ -314,7 +314,7 @@ class FieldGenerator():
       xyzReferenceFilePath = os.path.join(self.workDir,self.systemXYZFileName)
       if not os.path.isfile(xyzReferenceFilePath):
          sys.exit('File ' + xyzReferenceFilePath + ' does not exist!')
-      refFile = open(xyzReferenceFilePath, 'r')
+      refFile = open(xyzReferenceFilePath, 'r', encoding="utf-8")
       if self.imcon > 0:
          for i in range(0,3):
             next(refFile)
@@ -558,7 +558,7 @@ class FieldGenerator():
       xyzReferenceFilePath = os.path.join(self.workDir,self.systemXYZFileName)
       if not os.path.isfile(xyzReferenceFilePath):
          sys.exit('File ' + xyzReferenceFilePath + ' does not exist!')
-      refFile = open(xyzReferenceFilePath, 'r')
+      refFile = open(xyzReferenceFilePath, 'r', encoding="utf-8")
       #box definition if we have a periodic system
       if self.imcon > 0:
          for i in range(0,3):
@@ -569,7 +569,7 @@ class FieldGenerator():
          iLine = 3
       else:
          iLine = 0
-      for iMol, nMol in enumerate(self.nMols): 
+      for iMol, nMol in enumerate(self.nMols):
          self.names.append([])
          nLines = len(self.atoms[iMol])
          for i in range(0,nLines):
@@ -605,7 +605,7 @@ class FieldGenerator():
          FFFilePath = os.path.join(self.workDir, self.FFFileNames[idx])
          if not os.path.isfile(FFFilePath):
             sys.exit('File ' + FFFilePath + ' does not exist!')
-         readFile = open(FFFilePath, 'r')
+         readFile = open(FFFilePath, 'r', encoding="utf-8")
          lines = []
          #read lines without comments or empty lines
          for line in readFile:
@@ -848,7 +848,7 @@ class FieldGenerator():
 
       improperData = self.inputFF[iMol]['IMPROPER']
       tmpData = {}
-      
+
       #iterate over each improper
       for improper in self.improperList[iMol]:
          improperName = [ self.names[iMol][n] for n in improper]
@@ -1208,63 +1208,63 @@ global radii
 global radiiFactor
 radiiFactor = 1.1
 radii = {}
-radii[ 'H'] = 0.30 
-radii['He'] = 0.99 
-radii['Li'] = 1.52 
-radii['Be'] = 1.12 
-radii[ 'B'] = 0.88 
-radii[ 'C'] = 0.77 
-radii[ 'N'] = 0.70 
-radii[ 'O'] = 0.66 
-radii[ 'F'] = 0.64 
-radii['Ne'] = 1.60 
-radii['Na'] = 1.86 
-radii['Mg'] = 1.60 
-radii['Al'] = 1.43 
-radii['Si'] = 1.17 
-radii[ 'P'] = 1.10 
-radii[ 'S'] = 1.04 
-radii['Cl'] = 0.99 
-radii['Ar'] = 1.92 
-radii[ 'K'] = 2.31 
-radii['Ca'] = 1.97 
-radii['Sc'] = 1.60 
-radii['Ti'] = 1.46 
-radii[ 'V'] = 1.31 
-radii['Cr'] = 1.25 
-radii['Mn'] = 1.29 
-radii['Fe'] = 1.26 
-radii['Co'] = 1.25 
-radii['Ni'] = 1.24 
-radii['Cu'] = 1.28 
-radii['Zn'] = 1.33 
-radii['Ga'] = 1.41 
-radii['Ge'] = 1.22 
-radii['As'] = 1.21 
-radii['Se'] = 1.17 
-radii['Br'] = 1.14 
-radii['Kr'] = 1.97 
-radii['Rb'] = 2.44 
-radii['Sr'] = 2.15 
-radii[ 'Y'] = 1.80 
-radii['Zr'] = 1.57 
-radii['Nb'] = 1.41 
-radii['Mo'] = 1.36 
-radii['Tc'] = 1.35 
-radii['Ru'] = 1.33 
-radii['Rh'] = 1.34 
-radii['Pd'] = 1.38 
-radii['Ag'] = 1.44 
-radii['Cd'] = 1.49 
-radii['In'] = 1.66 
-radii['Sn'] = 1.62 
-radii['Sb'] = 1.41 
-radii['Te'] = 1.37 
-radii[ 'I'] = 1.33 
-radii['Xe'] = 2.17 
-radii['Cs'] = 2.62 
-radii['Ba'] = 2.17 
-radii['La'] = 1.88 
+radii[ 'H'] = 0.30
+radii['He'] = 0.99
+radii['Li'] = 1.52
+radii['Be'] = 1.12
+radii[ 'B'] = 0.88
+radii[ 'C'] = 0.77
+radii[ 'N'] = 0.70
+radii[ 'O'] = 0.66
+radii[ 'F'] = 0.64
+radii['Ne'] = 1.60
+radii['Na'] = 1.86
+radii['Mg'] = 1.60
+radii['Al'] = 1.43
+radii['Si'] = 1.17
+radii[ 'P'] = 1.10
+radii[ 'S'] = 1.04
+radii['Cl'] = 0.99
+radii['Ar'] = 1.92
+radii[ 'K'] = 2.31
+radii['Ca'] = 1.97
+radii['Sc'] = 1.60
+radii['Ti'] = 1.46
+radii[ 'V'] = 1.31
+radii['Cr'] = 1.25
+radii['Mn'] = 1.29
+radii['Fe'] = 1.26
+radii['Co'] = 1.25
+radii['Ni'] = 1.24
+radii['Cu'] = 1.28
+radii['Zn'] = 1.33
+radii['Ga'] = 1.41
+radii['Ge'] = 1.22
+radii['As'] = 1.21
+radii['Se'] = 1.17
+radii['Br'] = 1.14
+radii['Kr'] = 1.97
+radii['Rb'] = 2.44
+radii['Sr'] = 2.15
+radii[ 'Y'] = 1.80
+radii['Zr'] = 1.57
+radii['Nb'] = 1.41
+radii['Mo'] = 1.36
+radii['Tc'] = 1.35
+radii['Ru'] = 1.33
+radii['Rh'] = 1.34
+radii['Pd'] = 1.38
+radii['Ag'] = 1.44
+radii['Cd'] = 1.49
+radii['In'] = 1.66
+radii['Sn'] = 1.62
+radii['Sb'] = 1.41
+radii['Te'] = 1.37
+radii[ 'I'] = 1.33
+radii['Xe'] = 2.17
+radii['Cs'] = 2.62
+radii['Ba'] = 2.17
+radii['La'] = 1.88
 radii['Ce'] = 1.818
 radii['Pr'] = 1.824
 radii['Nd'] = 1.814
@@ -1279,53 +1279,53 @@ radii['Er'] = 1.761
 radii['Tm'] = 1.759
 radii['Yb'] = 1.922
 radii['Lu'] = 1.738
-radii['Hf'] = 1.57 
-radii['Ta'] = 1.43 
-radii[ 'W'] = 1.37 
-radii['Re'] = 1.37 
-radii['Os'] = 1.34 
-radii['Ir'] = 1.35 
-radii['Pt'] = 1.38 
-radii['Au'] = 1.44 
-radii['Hg'] = 1.52 
-radii['Tl'] = 1.71 
-radii['Pb'] = 1.75 
-radii['Bi'] = 1.70 
-radii['Po'] = 1.40 
-radii['At'] = 1.40 
-radii['Rn'] = 2.40 
-radii['Fr'] = 2.70 
-radii['Ra'] = 2.20 
-radii['Ac'] = 2.00 
-radii['Th'] = 1.79 
-radii['Pa'] = 1.63 
-radii[ 'U'] = 1.56 
-radii['Np'] = 1.55 
-radii['Pu'] = 1.59 
-radii['Am'] = 1.73 
-radii['Cm'] = 1.74 
-radii['Bk'] = 1.70 
-radii['Cf'] = 1.86 
-radii['Es'] = 1.86 
-radii['Fm'] = 2.00 
-radii['Md'] = 2.00 
-radii['No'] = 2.00 
-radii['Lr'] = 2.00 
-radii['Rf'] = 2.00 
-radii['Db'] = 2.00 
-radii['Sg'] = 2.00 
-radii['Bh'] = 2.00 
-radii['Hs'] = 2.00 
-radii['Mt'] = 2.00 
-radii['Ds'] = 2.00 
-radii['Rg'] = 2.00 
-radii['Cn'] = 2.00 
-radii['Nh'] = 2.00 
-radii['Fl'] = 2.00 
-radii['Mc'] = 2.00 
-radii['Lv'] = 2.00 
-radii['Ts'] = 2.00 
-radii['Og'] = 2.00 
+radii['Hf'] = 1.57
+radii['Ta'] = 1.43
+radii[ 'W'] = 1.37
+radii['Re'] = 1.37
+radii['Os'] = 1.34
+radii['Ir'] = 1.35
+radii['Pt'] = 1.38
+radii['Au'] = 1.44
+radii['Hg'] = 1.52
+radii['Tl'] = 1.71
+radii['Pb'] = 1.75
+radii['Bi'] = 1.70
+radii['Po'] = 1.40
+radii['At'] = 1.40
+radii['Rn'] = 2.40
+radii['Fr'] = 2.70
+radii['Ra'] = 2.20
+radii['Ac'] = 2.00
+radii['Th'] = 1.79
+radii['Pa'] = 1.63
+radii[ 'U'] = 1.56
+radii['Np'] = 1.55
+radii['Pu'] = 1.59
+radii['Am'] = 1.73
+radii['Cm'] = 1.74
+radii['Bk'] = 1.70
+radii['Cf'] = 1.86
+radii['Es'] = 1.86
+radii['Fm'] = 2.00
+radii['Md'] = 2.00
+radii['No'] = 2.00
+radii['Lr'] = 2.00
+radii['Rf'] = 2.00
+radii['Db'] = 2.00
+radii['Sg'] = 2.00
+radii['Bh'] = 2.00
+radii['Hs'] = 2.00
+radii['Mt'] = 2.00
+radii['Ds'] = 2.00
+radii['Rg'] = 2.00
+radii['Cn'] = 2.00
+radii['Nh'] = 2.00
+radii['Fl'] = 2.00
+radii['Mc'] = 2.00
+radii['Lv'] = 2.00
+radii['Ts'] = 2.00
+radii['Og'] = 2.00
 
 
 #########################
