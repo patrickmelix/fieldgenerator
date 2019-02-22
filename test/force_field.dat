@@ -72,6 +72,11 @@ IMPROPER 0
 INVERSION 0
 #inversions must include one atom, that is only connected to the three others
 
+RIGID 0
+#names of the atoms included in the rigid center, one type of rigid center per line
+#e.g. this would make the Cu2O8 clusters rigid centers
+#cu o1
+
 VDW 7
 ca lj  1.6998      0.0860
 cb lj  1.6998      0.0860

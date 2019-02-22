@@ -9,7 +9,7 @@ by Patrick Melix
 
 Limitations so far (that I know of):
  - no support for repeat-counter, frozen atom or igrp (see [DL_POLY Manual](https://ccpforge.cse.rl.ac.uk/gf/project/dl_poly_classic/docman/))
- - no support for crossterms, rigid, pmf, constraints, shell, teth
+ - no support for crossterms, pmf, constraints, shell, teth
  - no support for tbp, fbp, external field, tersoff, metal potential
  - only lj and buck potentials for VDW are supported
 

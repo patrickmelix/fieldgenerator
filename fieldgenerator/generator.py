@@ -22,6 +22,7 @@ import numpy as np
 from functools import reduce
 from operator import add,sub
 import simpleeval
+import collections
 
 
 #########################
@@ -149,6 +150,8 @@ class FieldGenerator():
          self._makeDihedralSection(iMol, update=True)
       elif key == 'INVERSION':
          self._makeInversionSection(iMol, update=True)
+      elif key == 'RIGID':
+         self._makeRigidSection(iMol, update=True)
       elif key == 'VDW':
          self._makeVdWSection(update=True)
       else:
@@ -208,6 +211,7 @@ class FieldGenerator():
       #make optional sections
       self._makeImproperList()
       self._makeInversionList()
+      self._makeRigidList()
 
       #set status
       self._builtStruc = True
@@ -260,6 +264,7 @@ class FieldGenerator():
          self._makeAngleSection(iMol)
          self._makeDihedralSection(iMol)
          self._makeInversionSection(iMol)
+         self._makeRigidSection(iMol)
          self.fieldOut.append('FINISH')
       #intermolecular definitions
       self._makeVdWSection()
@@ -535,6 +540,59 @@ class FieldGenerator():
          print('Number of Inversion Angles: ' + ",".join([ str(len(i)) for i in self.inversionList ]))
    """END makeInversionList"""
 
+
+   def _makeRigidList(self):
+      """Make a list of all Rigid centers"""
+      def flatten(l):
+        for el in l:
+            if isinstance(el, collections.Iterable) and not isinstance(el, (str, bytes)):
+                yield from flatten(el)
+            else:
+                yield el
+
+      self.rigidList = []
+      for iMol,molecule in enumerate(self.atoms):
+         rigidData = self.inputFF[iMol]['RIGID']
+         tmpData = {}
+         self.rigidList.append([])
+
+         #create list with all atom numbers for each defined rigid center
+         for rigid in rigidData:
+            indices = []
+            for j,atomName in enumerate(rigid):
+               #get all atoms with that name
+               for iAtom,name in enumerate(self.names[iMol]):
+                  if name == atomName:
+                     indices.append(iAtom)
+            #iterate over atoms that have names from this rigid list
+            for j,idx in enumerate(indices):
+                #check if this index already appears in one rigid center of the current mol
+                if idx in flatten(self.rigidList[-1]):
+                    #find the rigid center and add all bonded atoms to it
+                    center = [ l for l in self.rigidList[-1] if idx in l ]
+                    assert len(center) == 1
+                    center = center[0]
+                    centerIdx = self.rigidList[-1].index(center)
+                    #iterate over all indices beyond this one, add bonded to this center
+                    for idx2 in indices[j+1:]:
+                        #if already in list, skip
+                        if idx2 in flatten(self.rigidList[-1]):
+                            continue
+                        #if bonded, add it
+                        if idx2 in self.bondList[iMol][str(idx)]:
+                            self.rigidList[-1][centerIdx].append(idx2)
+
+                #else, this is a new rigid center
+                else:
+                    self.rigidList[-1].append([idx])
+                    #iterate over all indices beyond this one, add bonded to this center
+                    for idx2 in indices[j+1:]:
+                        #if bonded, add it
+                        if idx2 in self.bondList[iMol][str(idx)]:
+                            self.rigidList[-1][-1].append(idx2)
+      if not self.disablePrinting:
+         print('Number of Rigid Centers: ' + ",".join([ str(len(i)) for i in self.rigidList ]))
+   """END makeRigidList"""
 
 
    def _inCutOff(self,iMol,i,j):
@@ -869,6 +927,37 @@ class FieldGenerator():
       pass
    """END makeCrosstermSection"""
 
+
+
+   def _makeRigidSection(self, iMol, update=False):
+      """make the Rigid Section"""
+      if not 'RIGID' in self.inputFF[iMol] or len(self.inputFF[iMol]['RIGID']) == 0:
+          self.fieldOut.append('RIGID  0')
+          return
+
+      section = []
+      data = self.inputFF[iMol]['RIGID']
+      tmpData = {}
+
+      #if the inversionList was not built before
+      if not hasattr(self, 'rigidList'):
+          self._makeRigidList()
+
+      #print the inversions
+      section.append('RIGID ' + str(len(self.rigidList[iMol])))
+      #iterate over each rigid center
+      for center in self.rigidList[iMol]:
+          nItems = len(center)
+          tmpCenter = sorted([ i+1 for i in center ])
+          if nItems > 15:
+              raise ValueError("DLP only supports 15 atoms per rigid center.")
+          section.append(('{:8} '*(nItems+1)).format(nItems, *tmpCenter))
+      #add to or update the field list
+      if update:
+         overwrite(self.fieldOut,iMol,section)
+      else:
+         self.fieldOut.extend(section)
+   """END makeRigidSection"""
 
 
 
