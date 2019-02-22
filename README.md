@@ -98,6 +98,6 @@ You can also just message me: chemistry@melix.me
 
 ## Acknowledgement:
 
-Radii for bond-guessing taken from PLAMS (LGPL-3.0): github.com/SCM-NV/PLAMS
+Radii for bond-guessing taken from [PLAMS](github.com/SCM-NV/PLAMS) (LGPL-3.0)
 If your molecule is not represented well with this method try playing with the factor radiiFactor
 or overwrite the function.
