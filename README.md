@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/95719598.svg)](https://zenodo.org/badge/latestdoi/95719598)
+
+
 # FieldGenerator
 --------------
 Module to create a FIELD and CONFIG file for [DL_POLY Classic](https://ccpforge.cse.rl.ac.uk/gf/project/dl_poly_classic/).
