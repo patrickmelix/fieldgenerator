@@ -984,11 +984,11 @@ class FieldGenerator():
             jAtomValues = VdWData[j][1:]
             if not jAtomValues[0] == iAtomValues[0]:
                sys.exit('VdW-Potential missmatch')
-            epsilon = float(self.conv.eval(iAtomValues[1])) + float(self.conv.eval(jAtomValues[1]))
-            sigma = np.sqrt(float(self.conv.eval(iAtomValues[2])) * float(self.conv.eval(jAtomValues[2])))
+            sigma = float(self.conv.eval(iAtomValues[1])) + float(self.conv.eval(jAtomValues[1]))
+            epsilon = np.sqrt(float(self.conv.eval(iAtomValues[2])) * float(self.conv.eval(jAtomValues[2])))
             #lennart-jones 12-6
             if iAtomValues[0] == 'lj':
-               values = [ sigma, epsilon ]
+               values = [ epsilon, sigma ]
             #buckingham,  1.12246208 is 2^(1/6).  184000 and 2.25 constants from the MM3 form
             elif iAtomValues[0] == 'buck':
                values = [ 184000*epsilon, 2*sigma*1.22462048/12, 2.25*epsilon*(pow(2*sigma*1.122462048,6)) ]
